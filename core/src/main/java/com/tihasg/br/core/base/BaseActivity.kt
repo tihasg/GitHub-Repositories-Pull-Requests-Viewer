@@ -1,4 +1,4 @@
-package com.tihasg.br.github_repositories_pull_requests_viewer.base
+package com.tihasg.br.core.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -23,6 +23,4 @@ rootProject.name = "GitHub-Repositories-Pull-Requests-Viewer"
 include(":app")
 include(":domain")
 include(":data")
-include(":feature")
-include(":feature:repositories")
-include(":feature:pullrequests")
+include(":core")

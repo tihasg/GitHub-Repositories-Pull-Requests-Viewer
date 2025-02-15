@@ -14,7 +14,8 @@ class PullRequestsAdapter(
 ) : ListAdapter<PullRequest, PullRequestsAdapter.PullRequestViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PullRequestViewHolder {
-        val binding = ItemPullRequestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemPullRequestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PullRequestViewHolder(binding)
     }
 

@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
-    namespace = "com.tihasg.br.feature"
+    namespace = "com.tihasg.br.core"
     compileSdk = 34
 
     defaultConfig {
@@ -30,6 +31,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -40,4 +44,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // RxJava
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.rxkotlin)
+
+    // Dagger2 para IoC
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 }

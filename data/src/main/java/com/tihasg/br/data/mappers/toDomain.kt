@@ -32,7 +32,7 @@ fun ListRepositoryResponse.toDomain(): com.tihasg.br.domain.model.ListRepository
     )
 }
 
-fun  RepositoryResponse.toDomain(): com.tihasg.br.domain.model.Repository {
+fun RepositoryResponse.toDomain(): com.tihasg.br.domain.model.Repository {
     return com.tihasg.br.domain.model.Repository(
         id = id,
         name = name,

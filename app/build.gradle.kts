@@ -40,10 +40,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(project(":data"))
     implementation(project(":domain"))
-    implementation(project(":feature:repositories"))
-    implementation(project(":feature:pullrequests"))
 
     // AndroidX e Material Design
     implementation(libs.androidx.core.ktx)
@@ -60,7 +59,7 @@ dependencies {
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxkotlin)
-    
+
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

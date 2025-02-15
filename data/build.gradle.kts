@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    
+
     // AndroidX e Material Design
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -3,12 +3,13 @@ package com.tihasg.br.github_repositories_pull_requests_viewer.presentation.repo
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tihasg.br.core.base.BaseActivity
+import com.tihasg.br.core.utils.updateData
+import com.tihasg.br.core.utils.visibleOrGone
 import com.tihasg.br.domain.model.Repository
 import com.tihasg.br.github_repositories_pull_requests_viewer.MyApp
-import com.tihasg.br.github_repositories_pull_requests_viewer.base.BaseActivity
 import com.tihasg.br.github_repositories_pull_requests_viewer.databinding.ActivityRepositoriesBinding
 import com.tihasg.br.github_repositories_pull_requests_viewer.presentation.pullrequests.PullRequestsActivity
 import io.reactivex.rxkotlin.subscribeBy
@@ -35,7 +36,7 @@ class RepositoriesActivity : BaseActivity<ActivityRepositoriesBinding>() {
     private fun setupRecyclerView() {
         adapter = RepositoriesAdapter { repository: Repository ->
             val intent = Intent(this, PullRequestsActivity::class.java).apply {
-                putExtra("owner", repository.owner.login)
+                putExtra("owner", repository.owner?.login)
                 putExtra("repo", repository.name)
             }
             startActivity(intent)
@@ -47,7 +48,7 @@ class RepositoriesActivity : BaseActivity<ActivityRepositoriesBinding>() {
     private fun subscribeToViewModel() {
         viewModel.states()
             .subscribeBy { state ->
-                binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                binding.progressBar.visibleOrGone(state.isLoading)
                 if (!state.isLoading) {
                     if (state.error != null) {
                         AlertDialog.Builder(this)
@@ -58,7 +59,7 @@ class RepositoriesActivity : BaseActivity<ActivityRepositoriesBinding>() {
                             }
                             .show()
                     } else {
-                        adapter.submitList(state.repositories)
+                        adapter.updateData(state.repositories)
                     }
                 }
             }
