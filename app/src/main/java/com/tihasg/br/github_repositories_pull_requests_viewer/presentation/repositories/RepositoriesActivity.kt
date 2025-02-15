@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tihasg.br.core.base.BaseActivity
+import com.tihasg.br.core.utils.Constants.EXTRA_OWNER
+import com.tihasg.br.core.utils.Constants.EXTRA_REPO
 import com.tihasg.br.core.utils.updateData
 import com.tihasg.br.core.utils.visibleOrGone
 import com.tihasg.br.domain.model.Repository
 import com.tihasg.br.github_repositories_pull_requests_viewer.MyApp
+import com.tihasg.br.github_repositories_pull_requests_viewer.R
 import com.tihasg.br.github_repositories_pull_requests_viewer.databinding.ActivityRepositoriesBinding
 import com.tihasg.br.github_repositories_pull_requests_viewer.presentation.pullrequests.PullRequestsActivity
 import io.reactivex.rxkotlin.subscribeBy
@@ -36,8 +39,8 @@ class RepositoriesActivity : BaseActivity<ActivityRepositoriesBinding>() {
     private fun setupRecyclerView() {
         adapter = RepositoriesAdapter { repository: Repository ->
             val intent = Intent(this, PullRequestsActivity::class.java).apply {
-                putExtra("owner", repository.owner?.login)
-                putExtra("repo", repository.name)
+                putExtra(EXTRA_OWNER, repository.owner?.login)
+                putExtra(EXTRA_REPO, repository.name)
             }
             startActivity(intent)
         }
@@ -52,9 +55,9 @@ class RepositoriesActivity : BaseActivity<ActivityRepositoriesBinding>() {
                 if (!state.isLoading) {
                     if (state.error != null) {
                         AlertDialog.Builder(this)
-                            .setTitle("Erro")
-                            .setMessage(state.error.message ?: "Ocorreu um erro inesperado")
-                            .setPositiveButton("OK") { dialog, _ ->
+                            .setTitle(getString(R.string.error_title))
+                            .setMessage(state.error.message ?: getString(R.string.unexpected_error))
+                            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                                 dialog.dismiss()
                             }
                             .show()
