@@ -20,29 +20,33 @@ Este projeto é um aplicativo Android desenvolvido em **Kotlin** que consulta a 
   - Data do PR  
   - Corpo (body) do PR  
   - Ao selecionar um item, a página do Pull Request é aberta no navegador padrão.  
-  > **Observação:** Esta tela está de acordo com o mockup "Tela Lista de prs.jpeg".
 
 ## Abordagem Arquitetural
 
 ### MVI (Model-View-Intent)
 - **Intent:** Representa as ações do usuário, como cliques ou atualizações de scroll, que disparam intenções de mudança na UI.
 - **Model:** Responsável por manter o estado atual da tela, que é atualizado com os resultados das interações e das chamadas de API.
-- **View:** Observa o estado e renderiza a interface de acordo com os dados atuais, garantindo uma UI reativa e consistente.
+- **View:** Observa o estado e renderiza a interface de acordo com os dados atuais, garantindo uma UI reativa e consistente
 
 ### Clean Architecture
-A aplicação está dividida em três camadas bem definidas:
+A aplicação está dividida em quatro camadas bem definidas:
 
-- **Apresentação:**  
+- **MODULE APP:**  
   Contém os componentes de UI e a implementação do MVI, além dos ViewModels (ou presenters) que transformam as intents em estados para a view.
   
-- **Domínio:**  
+- **MODULE DOMAIN :**  
   Abriga a lógica de negócio e os casos de uso (use cases) que orquestram as operações de busca dos repositórios e pull requests.
   
-- **Dados:**  
+- **MODULE DATA:**  
   Responsável por realizar as chamadas à API do GitHub utilizando Retrofit/OkHttp, além de gerenciar o cache de dados e imagens com bibliotecas como Glide.
 
-## Tecnologias & Bibliotecas
+- **MODULE CORE:**  
+  Responsável por prover a base da aplicação, O BaseActivity, e o utils onde contem as UiExtensions.
 
+### Injeção de Dependências
+Utilizamos Dagger2 para realizar a injeção de dependências e garantir a modularidade e a testabilidade do código.
+
+## Tecnologias & Bibliotecas
 - **Linguagem:** Kotlin
 - **Programação Reativa:** RxJava (ReactiveX)
 - **Injeção de Dependências:** Dagger2
@@ -73,12 +77,9 @@ O projeto é modularizado para facilitar a escalabilidade e a manutenção:
    - Cada item da lista exibe os dados do pull request e, ao ser clicado, abre o link correspondente no navegador.
 
 ## Testes
-
 - **Testes Unitários:**  
   Cobrem a lógica dos casos de uso e a camada de apresentação (MVI). Utilizamos Mockk para simular as respostas da API e verificar o comportamento do ViewModel.
-  
-- **Testes de UI (Opcional):**  
-  Foram implementados testes de interface com Espresso para validar a navegação entre telas e a renderização correta dos dados.
+
 
 ## Considerações de Design
 
