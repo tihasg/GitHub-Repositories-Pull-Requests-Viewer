@@ -73,9 +73,12 @@ dependencies {
     implementation(libs.glide)
 
     // Testes
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.espresso.contrib)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.recyclerview)
     testImplementation(libs.robolectric)
 }

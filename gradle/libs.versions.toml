@@ -23,6 +23,9 @@ robolectric = "4.7.3"
 rxkotlin = "2.4.0"
 agp = "7.4.2"
 junitVersion = "1.2.1"
+junitKtx = "1.2.1"
+espressoContrib = "3.6.1"
+recyclerviewVersion = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -46,6 +49,9 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerviewVersion" }
 
 [bundles]
 androidx = ["androidx-core-ktx", "androidx-appcompat", "material", "constraintlayout", "recyclerview"]

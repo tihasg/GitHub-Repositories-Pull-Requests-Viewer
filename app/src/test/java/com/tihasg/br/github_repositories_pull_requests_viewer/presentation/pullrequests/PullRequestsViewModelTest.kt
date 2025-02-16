@@ -36,7 +36,6 @@ class PullRequestsViewModelTest {
 
     @Test
     fun `load pull requests success`() {
-
         val dummyPullRequests = listOf(
             PullRequest(
                 id = 1L,
@@ -46,9 +45,7 @@ class PullRequestsViewModelTest {
                 body = "PR Body"
             )
         )
-        every { getPullRequestsUseCase.execute("owner", "repo") } returns Single.just(
-            dummyPullRequests
-        )
+        every { getPullRequestsUseCase.execute("owner", "repo") } returns Single.just(dummyPullRequests)
 
         val testObserver = viewModel.states().test()
         viewModel.processIntents(PullRequestsIntent.LoadPullRequests("owner", "repo"))
@@ -68,4 +65,38 @@ class PullRequestsViewModelTest {
         testObserver.assertValueAt(0) { it.isLoading }
         testObserver.assertValueAt(1) { !it.isLoading && it.error == error }
     }
+
+    @Test
+    fun `load pull requests with empty list`() {
+        val dummyResponse = emptyList<PullRequest>()
+        every { getPullRequestsUseCase.execute("owner", "repo") } returns Single.just(dummyResponse)
+
+        val testObserver = viewModel.states().test()
+        viewModel.processIntents(PullRequestsIntent.LoadPullRequests("owner", "repo"))
+
+        testObserver.assertValueAt(0) { it.isLoading }
+        testObserver.assertValueAt(1) { !it.isLoading && it.pullRequests.isEmpty() }
+    }
+
+    @Test
+    fun `multiple intents processed correctly`() {
+        val dummyPullRequests = listOf(
+            PullRequest(
+                id = 2L,
+                title = "PR Title 2",
+                user = User("user2", "url2"),
+                created_at = "2025-02-16",
+                body = "PR Body 2"
+            )
+        )
+        every { getPullRequestsUseCase.execute("owner", "repo") } returns Single.just(dummyPullRequests)
+
+        val testObserver = viewModel.states().test()
+        viewModel.processIntents(PullRequestsIntent.LoadPullRequests("owner", "repo"))
+        viewModel.processIntents(PullRequestsIntent.LoadPullRequests("owner", "repo"))
+
+        testObserver.assertValueAt(0) { it.isLoading }
+        testObserver.assertValueAt(1) { !it.isLoading && it.pullRequests == dummyPullRequests }
+    }
+
 }

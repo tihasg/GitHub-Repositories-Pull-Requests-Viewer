@@ -47,9 +47,7 @@ class RepositoriesViewModelTest {
                 forks_count = 10
             )
         )
-        val dummyResponse = ListRepository(
-            items = dummyItems
-        )
+        val dummyResponse = ListRepository(items = dummyItems)
         every { getRepositoriesUseCase.execute("Kotlin", 1) } returns Single.just(dummyResponse)
 
         val testObserver = viewModel.states().test()
@@ -69,5 +67,62 @@ class RepositoriesViewModelTest {
 
         testObserver.assertValueAt(0) { it.isLoading }
         testObserver.assertValueAt(1) { !it.isLoading && it.error == error }
+    }
+
+    @Test
+    fun `load repositories with empty list`() {
+        val dummyResponse = ListRepository(items = emptyList())
+        every { getRepositoriesUseCase.execute("Kotlin", 1) } returns Single.just(dummyResponse)
+
+        val testObserver = viewModel.states().test()
+        viewModel.processIntents(RepositoriesIntent.LoadRepositories)
+
+        testObserver.assertValueAt(0) { it.isLoading }
+        testObserver.assertValueAt(1) { !it.isLoading && it.repositories.isEmpty() }
+    }
+
+    @Test
+    fun `load next page success`() {
+        val dummyItems = listOf(
+            Repository(
+                id = 2,
+                name = "Repo2",
+                description = "Desc2",
+                owner = Owner("user2", "url2"),
+                stargazers_count = 200,
+                forks_count = 20
+            )
+        )
+        val dummyResponse = ListRepository(items = dummyItems)
+        every { getRepositoriesUseCase.execute("Kotlin", 2) } returns Single.just(dummyResponse)
+
+        val testObserver = viewModel.states().test()
+        viewModel.processIntents(RepositoriesIntent.LoadNextPage("Kotlin", 2))
+
+        testObserver.assertValueAt(0) { it.isLoading }
+        testObserver.assertValueAt(1) { !it.isLoading && it.repositories == dummyItems }
+    }
+
+    @Test
+    fun `multiple intents processed correctly`() {
+        val dummyItems = listOf(
+            Repository(
+                id = 3,
+                name = "Repo3",
+                description = "Desc3",
+                owner = Owner("user3", "url3"),
+                stargazers_count = 300,
+                forks_count = 30
+            )
+        )
+        val dummyResponse = ListRepository(items = dummyItems)
+        every { getRepositoriesUseCase.execute("Kotlin", 1) } returns Single.just(dummyResponse)
+
+        val testObserver = viewModel.states().test()
+        viewModel.processIntents(RepositoriesIntent.LoadRepositories)
+        viewModel.processIntents(RepositoriesIntent.LoadRepositories)
+
+        testObserver.assertValueAt(0) { it.isLoading }
+        testObserver.assertValueAt(1) { !it.isLoading && it.repositories == dummyItems }
     }
 }
